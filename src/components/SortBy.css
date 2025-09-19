@@ -1,10 +1,8 @@
 .sort-select {
-    /* Inherits all styles from .select */
-    width: 250px; /* Slightly longer than 50% of the original 300px width */
-    min-width: 0; /* Allow it to shrink below min-width */
+    width: 250px;
+    min-width: 0;
 }
 
-/* Make the SelectLocation component maintain its original width */
 .Locations-header__filters .select:not(.sort-select) {
     width: 300px;
 }
