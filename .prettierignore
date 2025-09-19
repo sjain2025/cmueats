@@ -1,0 +1,8 @@
+# Ignore artifacts:
+build
+dist
+coverage
+
+*.json
+*.node.json
+.github
