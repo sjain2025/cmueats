@@ -25,12 +25,6 @@
     padding-bottom: 48px;
     position: relative;
 }
-
-.Locations-header__filters {
-    display: flex;
-    gap: 0.5rem;
-    width: 100%;
-}
 .Locations-header__miku-toggle {
     position: absolute;
     top: -290px;
@@ -134,10 +128,41 @@
         --right-cutoff: 100%;
     }
 }
+.Locations-header__filters {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.Locations-header__filters .sort-select {
+    order: 1;
+}
+
+.Locations-header__filters .select:not(.sort-select) {
+    order: 2;
+}
+
+@media screen and (max-width: 900px) {
+    .Locations-header__filters {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .Locations-header__filters .select,
+    .Locations-header__filters .sort-select {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+}
+
 @media screen and (min-width: 900px) {
     .Locations-header {
         grid-template-columns: 1fr 300px;
         align-items: center;
+    }
+    
+    .Locations-header__filters {
+        justify-content: flex-start;
     }
 }
 
