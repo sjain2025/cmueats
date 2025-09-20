@@ -26,15 +26,17 @@ function SortBy({ setSortBy, sortBy }: SortByProps) {
     }, [sortBy]);
 
     return (
-        <select 
-            onChange={(e) => setSortBy(e.target.value)} 
-            value={sortBy}
-            className="select sort-select"
-        >
-            <option value="" label="Sort by" />
-            <option value="closing-time">Closing time</option>
-            <option value="location">Location</option>
-        </select>
+        <div className="sort-container">
+            <span className="sort-label">Sort by:</span>
+            <select 
+                onChange={(e) => setSortBy(e.target.value)} 
+                value={sortBy}
+                className="select sort-select"
+            >
+                <option value="closing-time">Closing time</option>
+                <option value="location">Location</option>
+            </select>
+        </div>
     );
 }
 

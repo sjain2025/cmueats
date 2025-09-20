@@ -134,11 +134,11 @@
     align-items: center;
 }
 
-.Locations-header__filters .sort-select {
+.Locations-header__filters .sort-container {
     order: 1;
 }
 
-.Locations-header__filters .select:not(.sort-select) {
+.Locations-header__filters .filter-container {
     order: 2;
 }
 
@@ -148,10 +148,17 @@
         gap: 0.5rem;
     }
     
-    .Locations-header__filters .select,
-    .Locations-header__filters .sort-select {
-        width: 100% !important;
-        min-width: 0 !important;
+    .Locations-header__filters .sort-container,
+    .Locations-header__filters .filter-container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .Locations-header__filters .select {
+        flex: 1;
+        min-width: 0;
     }
 }
 

@@ -80,7 +80,7 @@ function ListPage({
             shouldAnimateCards.current = false;
             return newState;
         },
-        '',
+        'closing-time',
     );
     const [emails, setEmails] = useState<{ name: string; email: string }[]>([]);
     const [showOfflineAlert, setShowOfflineAlert] = useState(!navigator.onLine);
