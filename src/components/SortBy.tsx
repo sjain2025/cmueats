@@ -1,19 +1,44 @@
 import { useEffect } from 'react';
 import './SortBy.css';
+import { getUserToDestinationPath } from '../util/cmuMapsApi';
+import { IReadOnlyLocation_FromAPI_PostProcessed } from '../types/locationTypes';
 
 interface SortByProps {
     setSortBy: (sortBy: string) => void;
     sortBy: string;
+    locations?: IReadOnlyLocation_FromAPI_PostProcessed[];
+    onLocationDistancesCalculated?: (distances: Map<number, number>) => void;
 }
 
-function SortBy({ setSortBy, sortBy }: SortByProps) {
+function SortBy({ setSortBy, sortBy, locations, onLocationDistancesCalculated }: SortByProps) {
     useEffect(() => {
-        if (sortBy === 'location') {
+        if (sortBy === 'location' && locations && onLocationDistancesCalculated) {
             if ('geolocation' in navigator) {
                 navigator.geolocation.getCurrentPosition(
-                    (position) => {
+                    async (position) => {
                         const { latitude, longitude } = position.coords;
-                        console.log({ latitude, longitude });
+                        const distances = new Map<number, number>();
+                        
+                        for (const location of locations) {
+                            if (location.coordinates) {
+                                try {
+                                    const pathData = await getUserToDestinationPath(
+                                        latitude,
+                                        longitude,
+                                        location.coordinates.lat,
+                                        location.coordinates.lng
+                                    );
+                                    
+                                    if (pathData) {
+                                        distances.set(location.conceptId, pathData.Fastest.path.distance);
+                                    }
+                                } catch (error) {
+                                    console.error(error);
+                                }
+                            }
+                        }
+                        
+                        onLocationDistancesCalculated(distances);
                     },
                     (error) => {
                         console.error(error);
@@ -23,7 +48,7 @@ function SortBy({ setSortBy, sortBy }: SortByProps) {
                 console.error('error');
             }
         }
-    }, [sortBy]);
+    }, [sortBy, locations, onLocationDistancesCalculated]);
 
     return (
         <div className="sort-container">

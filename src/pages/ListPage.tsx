@@ -82,6 +82,7 @@ function ListPage({
         },
         'closing-time',
     );
+    const [locationDistances, setLocationDistances] = useState<Map<number, number>>(new Map());
     const [emails, setEmails] = useState<{ name: string; email: string }[]>([]);
     const [showOfflineAlert, setShowOfflineAlert] = useState(!navigator.onLine);
 
@@ -166,7 +167,14 @@ function ListPage({
                     />
                     <div className="Locations-header__filters">
                         <SelectLocation {...{ setLocationFilterQuery, locations }} />
-                        <SortBy {...{ setSortBy, sortBy }} />
+                        <SortBy 
+                            {...{ 
+                                setSortBy, 
+                                sortBy, 
+                                locations,
+                                onLocationDistancesCalculated: setLocationDistances
+                            }} 
+                        />
                     </div>
                     {IS_MIKU_DAY && (
                         <button
@@ -184,7 +192,7 @@ function ListPage({
                 </header>
 
                 <EateryCardGrid
-                    key={`${searchQuery}-${locationFilterQuery}`}
+                    key={`${searchQuery}-${locationFilterQuery}-${sortBy}`}
                     {...{
                         locations: filteredLocations,
                         shouldAnimateCards: shouldAnimateCards.current,
@@ -192,6 +200,8 @@ function ListPage({
                         extraLocationData,
                         setSearchQuery,
                         pinnedIds,
+                        sortBy,
+                        locationDistances,
                         updatePinnedIds: (newPinnedIds: Record<string, true>) => {
                             shouldAnimateCards.current = false;
                             updatePinnedIds(newPinnedIds);
