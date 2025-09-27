@@ -18,34 +18,43 @@ function SortBy({ setSortBy, sortBy, locations, onLocationDistancesCalculated }:
                     async (position) => {
                         const { latitude, longitude } = position.coords;
                         const distances = new Map<number, number>();
-                        
-                        for (const location of locations) {
-                            if (location.coordinates) {
+
+                        const pathPromises = locations
+                            .filter((location) => location.coordinates)
+                            .map(async (location) => {
                                 try {
                                     const pathData = await getUserToDestinationPath(
                                         latitude,
                                         longitude,
-                                        location.coordinates.lat,
-                                        location.coordinates.lng
+                                        location.coordinates!.lat,
+                                        location.coordinates!.lng,
                                     );
-                                    
+
                                     if (pathData) {
-                                        distances.set(location.conceptId, pathData.Fastest.path.distance);
+                                        return {
+                                            conceptId: location.conceptId,
+                                            distance: pathData.Fastest.path.distance,
+                                        };
                                     }
+                                    return null;
                                 } catch (error) {
-                                    console.error(error);
+                                    return null;
                                 }
+                            });
+
+                        const pathResults = await Promise.all(pathPromises);
+                        pathResults.forEach((result) => {
+                            if (result) {
+                                distances.set(result.conceptId, result.distance);
                             }
-                        }
-                        
+                        });
+
                         onLocationDistancesCalculated(distances);
                     },
-                    (error) => {
-                        console.error(error);
-                    }
+                    () => {
+                    },
                 );
             } else {
-                console.error('error');
             }
         }
     }, [sortBy, locations, onLocationDistancesCalculated]);
@@ -53,11 +62,7 @@ function SortBy({ setSortBy, sortBy, locations, onLocationDistancesCalculated }:
     return (
         <div className="sort-container">
             <span className="sort-label">Sort by:</span>
-            <select 
-                onChange={(e) => setSortBy(e.target.value)} 
-                value={sortBy}
-                className="select sort-select"
-            >
+            <select onChange={(e) => setSortBy(e.target.value)} value={sortBy} className="select sort-select">
                 <option value="closing-time">Closing time</option>
                 <option value="location">Location</option>
             </select>

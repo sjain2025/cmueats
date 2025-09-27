@@ -12,10 +12,13 @@ interface CMUMapsApiResponse {
                     level: string;
                 };
                 roomId: string;
-                neighbors: Record<string, {
-                    dist: number;
-                    toFloorInfo: any;
-                }>;
+                neighbors: Record<
+                    string,
+                    {
+                        dist: number;
+                        toFloorInfo: any;
+                    }
+                >;
             }>;
             distance: number;
         };
@@ -31,17 +34,17 @@ export async function getCMUMapsPath(
     startLat: number,
     startLng: number,
     endLat: number,
-    endLng: number
+    endLng: number,
 ): Promise<CMUMapsApiResponse | null> {
     try {
         const apiUrl = `/api/cmu-maps/path?start=${startLat},${startLng}&end=${endLat},${endLng}`;
-        
+
         const response = await fetch(apiUrl);
-        
+
         if (!response.ok) {
             throw new Error(`${response.status}`);
         }
-        
+
         const data: CMUMapsApiResponse = await response.json();
         return data;
     } catch (error) {
@@ -53,7 +56,7 @@ export async function getUserToDestinationPath(
     userLat: number,
     userLng: number,
     destinationLat: number,
-    destinationLng: number
+    destinationLng: number,
 ): Promise<CMUMapsApiResponse | null> {
     return getCMUMapsPath(userLat, userLng, destinationLat, destinationLng);
 }

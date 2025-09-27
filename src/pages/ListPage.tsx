@@ -75,13 +75,10 @@ function ListPage({
         '',
     );
 
-    const [sortBy, setSortBy] = useReducer<(_: string, x: string) => string>(
-        (_, newState) => {
-            shouldAnimateCards.current = false;
-            return newState;
-        },
-        'closing-time',
-    );
+    const [sortBy, setSortBy] = useReducer<(_: string, x: string) => string>((_, newState) => {
+        shouldAnimateCards.current = false;
+        return newState;
+    }, 'closing-time');
     const [locationDistances, setLocationDistances] = useState<Map<number, number>>(new Map());
     const [emails, setEmails] = useState<{ name: string; email: string }[]>([]);
     const [showOfflineAlert, setShowOfflineAlert] = useState(!navigator.onLine);
@@ -167,13 +164,13 @@ function ListPage({
                     />
                     <div className="Locations-header__filters">
                         <SelectLocation {...{ setLocationFilterQuery, locations }} />
-                        <SortBy 
-                            {...{ 
-                                setSortBy, 
-                                sortBy, 
+                        <SortBy
+                            {...{
+                                setSortBy,
+                                sortBy,
                                 locations,
-                                onLocationDistancesCalculated: setLocationDistances
-                            }} 
+                                onLocationDistancesCalculated: setLocationDistances,
+                            }}
                         />
                     </div>
                     {IS_MIKU_DAY && (

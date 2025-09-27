@@ -66,7 +66,7 @@ export default function EateryCardGrid({
         if (sortBy === 'location') {
             const distance1 = locationDistances.get(location1.conceptId);
             const distance2 = locationDistances.get(location2.conceptId);
-            
+
             if (distance1 !== undefined && distance2 !== undefined) {
                 return distance1 - distance2;
             }
@@ -74,7 +74,7 @@ export default function EateryCardGrid({
             if (distance2 !== undefined) return 1;
             return location1.name.localeCompare(location2.name);
         }
-        
+
         const state1 = location1.locationState;
         const state2 = location2.locationState;
 
