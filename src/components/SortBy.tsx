@@ -52,9 +52,11 @@ function SortBy({ setSortBy, sortBy, locations, onLocationDistancesCalculated }:
                         onLocationDistancesCalculated(distances);
                     },
                     () => {
+                        // Silently handle geolocation errors
                     },
                 );
             } else {
+                // Geolocation not supported
             }
         }
     }, [sortBy, locations, onLocationDistancesCalculated]);
