@@ -89,8 +89,15 @@ export default function EateryCardGrid({
             if (distance1 !== undefined && distance2 !== undefined) {
                 return distance1 - distance2;
             }
-            if (distance1 !== undefined) return -1;
-            if (distance2 !== undefined) return 1;
+
+            if (distance1 === undefined || distance2 === undefined) {
+                /* Fallback: sort based on Euclidean distance between
+                   the latitude and longitude of locations instead of
+                   CMU Maps API */
+                if (distance1 !== undefined) return -1;
+                if (distance2 !== undefined) return 1;
+            }
+
             return location1.name.localeCompare(location2.name);
         }
 
