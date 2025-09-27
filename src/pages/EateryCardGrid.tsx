@@ -64,6 +64,25 @@ export default function EateryCardGrid({
 
     const compareLocations = (location1: IReadOnlyLocation_Combined, location2: IReadOnlyLocation_Combined) => {
         if (sortBy === 'location') {
+            const state1 = location1.locationState;
+            const state2 = location2.locationState;
+            
+            const getPriority = (state: LocationState) => {
+                if (state === LocationState.OPEN) return 0;
+                if (state === LocationState.CLOSES_SOON) return 1;
+                if (state === LocationState.OPENS_SOON) return 2;
+                if (state === LocationState.CLOSED) return 3;
+                if (state === LocationState.CLOSED_LONG_TERM) return 4;
+                return 5;
+            };
+            
+            const priority1 = getPriority(state1);
+            const priority2 = getPriority(state2);
+            
+            if (priority1 !== priority2) {
+                return priority1 - priority2;
+            }
+
             const distance1 = locationDistances.get(location1.conceptId);
             const distance2 = locationDistances.get(location2.conceptId);
 
