@@ -118,6 +118,7 @@ export function AudioContextProvider({ children }: { children: React.ReactNode }
             initSong: (url, playerId) => {
                 foregroundAudioObj.setAttribute('src', url);
                 backgroundAudioObj.setAttribute('src', url);
+                backgroundAudioObj.load();
                 foregroundAudioObj.load();
                 foregroundAudioObj.play();
                 if (!initializedAudioAnalyzer.current) {
