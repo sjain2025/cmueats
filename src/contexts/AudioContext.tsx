@@ -9,7 +9,7 @@ type AudioState = {
     /** is NaN when data is still loading */
     timeCode: number;
 };
-const isDesktop = !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 type AudioContextValue = {
     /** always restarts song, even if playerId is currently active */
@@ -73,7 +73,7 @@ export function AudioContextProvider({ children }: { children: React.ReactNode }
 
     // wavetable audio object to globalAudioObj handoff
     useEffect(() => {
-        if (isDesktop) return () => {};
+        if (!isMobile) return () => {};
         const controller = new AbortController();
         document.addEventListener(
             'visibilitychange',
