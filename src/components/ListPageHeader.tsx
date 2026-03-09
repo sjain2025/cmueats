@@ -5,6 +5,7 @@ import { getGreetings } from '../util/greeting';
 import GoogleIcon from '../assets/google.svg?react';
 import SignOut from '../assets/control_buttons/signOut.svg?react';
 import { useThemeContext } from '../ThemeProvider';
+import mikuHeaderImg from '../assets/miku/miku-banner-2026.png';
 
 export default function ListPageHeader() {
     const { data: userLoggedInData, isLoading, error } = $api.useQuery('get', '/whoami');
@@ -13,6 +14,9 @@ export default function ListPageHeader() {
         () => getGreetings(new Date().getHours(), { isMikuDay: theme === 'miku' }),
         [theme],
     );
+    if (theme === 'miku') {
+        return <img className={css['list-header-miku']} src={mikuHeaderImg} alt="" />;
+    }
 
     return (
         <header className={css['list-header']}>
